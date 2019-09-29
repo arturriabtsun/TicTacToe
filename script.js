@@ -2,7 +2,8 @@ function TicTacToeGame () {
     this.gameContainer = document.querySelector('#game-container'); // nasz konstruktor
     this.xUser = 'x';
     this.oUser = 'o';
-    this.currentUser = this.xUser;    
+    this.currentUser = this.xUser; 
+    this.win = false;   
 }
 
 TicTacToeGame.prototype.results = [
@@ -22,15 +23,18 @@ TicTacToeGame.prototype.init = function() {
     const xUser = document.querySelector('#x-user').value;
     const oUser = document.querySelector('#o-user').value;
 
-    if (xUser!== oUser) {
+    if (xUser!== oUser && !this.win) {
     const table = this.createTable();
     this.gameContainer.innerHTML = '';
     this.gameContainer.appendChild(table);
     this.currentUser = this.xUser;
     this.xUser = xUser;
     this.oUser = oUser;
+    } else if(this.win) {
+        this.win = false;
+        this.init();
     } else {
-        this.modal = new Modal('Podaj różne imiona');
+        this.modal = new Modal('Wprowadź róźne iomiona')
     }
 };
 
@@ -62,6 +66,7 @@ TicTacToeGame.prototype.createCell = function (id) {
     return cell;
 };
 TicTacToeGame.prototype.cellClickHandler = function(event) {
+    
     const cell = event.target;
     if(cell.innerHTML !== '') {
         return;
@@ -76,9 +81,9 @@ TicTacToeGame.prototype.cellClickHandler = function(event) {
         cell.dataset.value = 'o';
             
         }
-    const win = this.checkResults();
+    this.win = this.checkResults();
     
-    if(win) {
+    if(this.win) {
         this.modal = new Modal('Wygrał ' + this.currentUser);
     } else {
         this.currentUser = this.currentUser === this.xUser ? this.oUser : this.xUser;
