@@ -18,10 +18,20 @@ TicTacToeGame.prototype.results = [
 ];
 
 TicTacToeGame.prototype.init = function() {
+
+    const xUser = document.querySelector('#x-user').value;
+    const oUser = document.querySelector('#o-user').value;
+    if (xUser!== oUser) {
     const table = this.createTable();
     this.gameContainer.innerHTML = '';
     this.gameContainer.appendChild(table);
+    this.xUser = xUser;
+    this.oUser = oUser;
+    } else {
+        this.modal = new Modal('Podaj różne imiona');
+    }
 };
+
 TicTacToeGame.prototype.createTable = function () {
     const table = document.createElement('table');
     ['1', '2', '3'].forEach(function (rowId) {
