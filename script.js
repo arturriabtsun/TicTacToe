@@ -5,6 +5,18 @@ function TicTacToeGame () {
     this.currentUser = this.xUser;    
 }
 
+TicTacToeGame.prototype.results = [
+    ['a1', 'b1', 'c1'],
+    ['a2', 'b2', 'c2'],
+    ['a3', 'b3', 'c3'],
+    ['a1', 'a2', 'a3'],
+    ['b1', 'b2', 'b3'],
+    ['c1', 'c2', 'c3'],
+    ['a1', 'b2', 'c3'],
+    ['c1', 'b2', 'a3']
+
+];
+
 TicTacToeGame.prototype.init = function() {
     const table = this.createTable();
     this.gameContainer.innerHTML = '';
@@ -31,8 +43,10 @@ TicTacToeGame.prototype.createRow = function (rowId) {
 TicTacToeGame.prototype.createCell = function (id) {
     const cell = document.createElement('td');
     cell.className = 'cell';
-    cell.addEventListener('click', this.cellClickHandler.bind(this));
     cell.id = id;
+    cell.dataset.value = '';
+    cell.addEventListener('click', this.cellClickHandler.bind(this));
+
     return cell;
 };
 TicTacToeGame.prototype.cellClickHandler = function(event) {
@@ -42,12 +56,37 @@ TicTacToeGame.prototype.cellClickHandler = function(event) {
     }
     if(this.currentUser === this.xUser) {
         cell.innerHTML = '&times;';
-        this.currentUser = this.oUser;
+        cell.dataset.value = 'x';
+        
     }
     else {
-            cell.innerHTML = '&cir;';
-            this.currentUser = this.xUser;
+        cell.innerHTML = '&cir;';
+        cell.dataset.value = 'o';
+            
         }
+    const win = this.checkResults();
+    
+    if(win){
+        this.modal = new Modal('Wygrał ' + this.currentUser);
+    } else {
+        this.currentUser = this.currentUser === this.xUser ? this.oUser : this.xUser;
+    }
+};
+
+TicTacToeGame.prototype.checkResults = function () {
+    let win = false;
+    for (let idx = 0; idx < this.results.length; idx++) {
+        const resRow = this.results[idx];
+        const result = resRow.map(function(id){
+            const cell = document.querySelector('#' + id);
+            return cell.dataset.value;
+        }).join('');
+        if(result === 'xxx'  || result === 'ooo') {
+            console.log('Wygrał');
+            win = true;
+        }
+    }
+    return win;
 };
 
 function Modal(message) {
