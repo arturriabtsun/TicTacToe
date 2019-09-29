@@ -19,6 +19,9 @@ TicTacToeGame.prototype.results = [
 ];
 
 TicTacToeGame.prototype.init = function() {
+    if(this.modal !== undefined) {
+        this.modal.close();
+    }
 
     const xUser = document.querySelector('#x-user').value;
     const oUser = document.querySelector('#o-user').value;
@@ -68,7 +71,7 @@ TicTacToeGame.prototype.createCell = function (id) {
 TicTacToeGame.prototype.cellClickHandler = function(event) {
     
     const cell = event.target;
-    if(cell.innerHTML !== '') {
+    if(cell.innerHTML !== '' || this.win) {
         return;
     }
     if(this.currentUser === this.xUser) {
@@ -84,7 +87,7 @@ TicTacToeGame.prototype.cellClickHandler = function(event) {
     this.win = this.checkResults();
     
     if(this.win) {
-        this.modal = new Modal('Wygrał ' + this.currentUser);
+        this.modal = new Modal('Wygrał ' + this.currentUser, this.init.bind(this));
     } else {
         this.currentUser = this.currentUser === this.xUser ? this.oUser : this.xUser;
     }
@@ -106,7 +109,8 @@ TicTacToeGame.prototype.checkResults = function () {
     return win;
 };
 
-function Modal(message) {
+function Modal(message, closeCallback) {
+    this.closeCallback = closeCallback;
     this.modalEl = document.createElement('div');
     this.modalEl.className = 'modal';
     this.modalEl.innerHTML = '<p>' + message + '</p>'; // innerHTML
@@ -119,13 +123,30 @@ function Modal(message) {
 }
 
 Modal.prototype.close = function() {
+
     this.modalEl.remove(); //remove - usuwa stworzony wcześniej element
+    if(this.closeCallback !== undefined && this.win) {
+        this.closeCallback();
+    }
 };
 
 const game = new TicTacToeGame();
+const button = document.querySelector('#start-game');
 
-document.querySelector('#start-game').addEventListener('click', function() {
-    game.init();
+const xUser = document.querySelector('#x-user');
+const oUser = document.querySelector('#o-user');
+
+function checkNames() {
+    if(xUser.value !== '' && oUser.value !== '') {
+        button.disabled = false;
+    }
+}
+
+xUser.addEventListener('input', checkNames);
+oUser.addEventListener('input', checkNames);
+
+button.addEventListener('click', function() {
+  game.init();
 });
 
 //const modal = new Modal("lorem ipsum fortunatum");
