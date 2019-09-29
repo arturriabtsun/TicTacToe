@@ -66,7 +66,7 @@ TicTacToeGame.prototype.cellClickHandler = function(event) {
         }
     const win = this.checkResults();
     
-    if(win){
+    if(win) {
         this.modal = new Modal('Wygrał ' + this.currentUser);
     } else {
         this.currentUser = this.currentUser === this.xUser ? this.oUser : this.xUser;
