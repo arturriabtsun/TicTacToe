@@ -1,11 +1,13 @@
 function TicTacToeGame () {
     this.gameContainer = document.querySelector('#game-container'); // nasz konstruktor
-    
-    
-
+    this.xUser = '';
+    this.oUser = '';
+    this.currentUser = this.xUser;    
 }
+
 TicTacToeGame.prototype.init = function() {
     const table = this.createTable();
+    this.gameContainer.innerHTML = '';
     this.gameContainer.appendChild(table);
 };
 TicTacToeGame.prototype.createTable = function () {
@@ -29,10 +31,21 @@ TicTacToeGame.prototype.createRow = function (rowId) {
 TicTacToeGame.prototype.createCell = function (id) {
     const cell = document.createElement('td');
     cell.className = 'cell';
+    cell.addEventListener('click', this.cellClickHandler.bind(this));
     cell.id = id;
     return cell;
 };
-
+TicTacToeGame.prototype.cellClickHandler = function(event) {
+    const cell = event.target;
+    if(this.currentUser === this.xUser) {
+        cell.innerHTML = '&times;';
+    this.currentUser = this.oUser;}
+        else {
+            cell.innerHTML = '@cir;';
+            this.currentUser = this.xUser;
+        }
+    cell.innerHTML = '&times;';
+};
 
 function Modal(message) {
     this.modalEl = document.createElement('div');
