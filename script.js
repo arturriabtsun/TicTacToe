@@ -1,7 +1,7 @@
 function TicTacToeGame () {
     this.gameContainer = document.querySelector('#game-container'); // nasz konstruktor
-    this.xUser = '';
-    this.oUser = '';
+    this.xUser = 'x';
+    this.oUser = 'o';
     this.currentUser = this.xUser;    
 }
 
@@ -37,14 +37,17 @@ TicTacToeGame.prototype.createCell = function (id) {
 };
 TicTacToeGame.prototype.cellClickHandler = function(event) {
     const cell = event.target;
+    if(cell.innerHTML !== '') {
+        return;
+    }
     if(this.currentUser === this.xUser) {
         cell.innerHTML = '&times;';
-    this.currentUser = this.oUser;}
-        else {
-            cell.innerHTML = '@cir;';
+        this.currentUser = this.oUser;
+    }
+    else {
+            cell.innerHTML = '&cir;';
             this.currentUser = this.xUser;
         }
-    cell.innerHTML = '&times;';
 };
 
 function Modal(message) {
