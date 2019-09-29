@@ -21,10 +21,12 @@ TicTacToeGame.prototype.init = function() {
 
     const xUser = document.querySelector('#x-user').value;
     const oUser = document.querySelector('#o-user').value;
+
     if (xUser!== oUser) {
     const table = this.createTable();
     this.gameContainer.innerHTML = '';
     this.gameContainer.appendChild(table);
+    this.currentUser = this.xUser;
     this.xUser = xUser;
     this.oUser = oUser;
     } else {
