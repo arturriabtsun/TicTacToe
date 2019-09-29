@@ -130,6 +130,7 @@ Modal.prototype.close = function() {
     }
 };
 
+
 const game = new TicTacToeGame();
 const button = document.querySelector('#start-game');
 
